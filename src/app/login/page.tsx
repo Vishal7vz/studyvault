@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signInWithGoogle, signInWithEmail, signUpWithEmail } from "@/lib/auth";
 import { useAuth } from "@/hooks/useAuth";
 
-export default function LoginPage() {
+function LoginInner() {
   const router = useRouter();
   const params = useSearchParams();
   const next = params.get("next") || "/dashboard";
@@ -107,5 +107,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="grid min-h-screen place-items-center text-zinc-500">Loading...</div>}>
+      <LoginInner />
+    </Suspense>
   );
 }
